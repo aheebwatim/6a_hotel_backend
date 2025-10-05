@@ -1,0 +1,59 @@
+# ==========================================================
+# Render Blueprint — 6a Hotel Backend
+# Deploys Django + PostgreSQL + Whitenoise on Render
+# ==========================================================
+
+services:
+  - type: web
+    name: 6a-hotel-backend
+    env: python
+    plan: free             # can switch to starter/pro later
+    buildCommand: "pip install -r requirements.txt && python manage.py collectstatic --noinput"
+    startCommand: "gunicorn core.wsgi:application"
+
+    envVars:
+      # --- Core Django ---
+      - key: DJANGO_SETTINGS_MODULE
+        value: core.settings
+      - key: DEBUG
+        value: false
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ALLOWED_HOSTS
+        value: ".onrender.com,6ahotels.com,www.6ahotels.com,localhost,127.0.0.1"
+
+      # --- Python version ---
+      - key: PYTHON_VERSION
+        value: 3.13.4
+
+      # --- Database (auto-linked below) ---
+      - key: DATABASE_URL
+        fromDatabase:
+          name: 6a-hotel-db
+          property: connectionString
+
+      # --- CORS & CSRF ---
+      - key: CORS_ALLOWED_ORIGINS
+        value: "https://6ahotels.com,https://www.6ahotels.com,https://6a-hotel-backend.onrender.com,http://localhost:3000"
+      - key: CSRF_TRUSTED_ORIGINS
+        value: "https://6ahotels.com,https://www.6ahotels.com,https://6a-hotel-backend.onrender.com,http://localhost:3000"
+
+      # --- Timezone & Language ---
+      - key: TIME_ZONE
+        value: Africa/Kampala
+      - key: LANGUAGE_CODE
+        value: en-us
+
+      # --- Static & Media Paths ---
+      - key: STATIC_URL
+        value: /static/
+      - key: MEDIA_URL
+        value: /media/
+      - key: STATIC_ROOT
+        value: /opt/render/project/src/staticfiles
+      - key: MEDIA_ROOT
+        value: /opt/render/project/src/media
+
+databases:
+  - name: 6a-hotel-db
+    plan: free
