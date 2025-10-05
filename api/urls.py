@@ -1,8 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import RoomViewSet, ServiceViewSet, ReservationViewSet
-from django.urls import path
-from .views import contact_message
+from .views import RoomViewSet, ServiceViewSet, ReservationViewSet, contact_message
 
 # ------------------------------
 # DRF Router
@@ -16,8 +14,6 @@ router.register(r'reservations', ReservationViewSet, basename='reservation')
 # URL Patterns
 # ------------------------------
 urlpatterns = [
-    path('api/', include(router.urls)),
-]
-urlpatterns = [
-    path('contact/', contact_message, name='contact_message'),
+    path('', include(router.urls)),                # e.g. /api/rooms/
+    path('contact/', contact_message, name='contact_message'),  # /api/contact/
 ]
