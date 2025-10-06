@@ -39,8 +39,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "django_filters",
     "corsheaders",
-    "sslserver",  # local HTTPS only
-
+    
     # Local apps
     "api",
     "hotel",
