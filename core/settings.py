@@ -7,7 +7,7 @@ import dj_database_url
 # Base Setup
 # ============================================================
 BASE_DIR = Path(__file__).resolve().parent.parent
-FRONTEND_BUILD_DIR = BASE_DIR / "frontend_build"
+FRONTEND_BUILD_DIR = BASE_DIR / "frontend_build" / "build"
 load_dotenv(BASE_DIR / ".env")
 
 # ============================================================
