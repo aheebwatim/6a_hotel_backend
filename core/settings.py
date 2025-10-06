@@ -7,7 +7,7 @@ import dj_database_url
 # Base Setup
 # ============================================================
 BASE_DIR = Path(__file__).resolve().parent.parent
-FRONTEND_BUILD_DIR = BASE_DIR / "frontend_build" / "build"
+FRONTEND_BUILD_DIR = BASE_DIR / "frontend_build"  # <-- fixed (no /build)
 load_dotenv(BASE_DIR / ".env")
 
 # ============================================================
@@ -16,7 +16,11 @@ load_dotenv(BASE_DIR / ".env")
 SECRET_KEY = os.getenv("SECRET_KEY", "fallback-secret-key")
 DEBUG = os.getenv("DEBUG", "True") == "True"
 
-ALLOWED_HOSTS = ["6ahotels.com", "www.6ahotels.com", "sixa-hotel-backend.onrender.com"]
+ALLOWED_HOSTS = [
+    "6ahotels.com",
+    "www.6ahotels.com",
+    "sixa-hotel-backend.onrender.com",
+]
 
 # Trust proxy headers (Render, Caddy, etc.)
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
@@ -37,7 +41,6 @@ INSTALLED_APPS = [
     "rest_framework",
     "django_filters",
     "corsheaders",
-    
 
     # Local apps
     "api",
@@ -62,12 +65,12 @@ MIDDLEWARE = [
 ROOT_URLCONF = "core.urls"
 
 # ============================================================
-# Templates (Serve React Build)
+# Templates (Serve Static Frontend)
 # ============================================================
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [FRONTEND_BUILD_DIR],  # React index.html
+        "DIRS": [FRONTEND_BUILD_DIR],  # point directly to static index.html
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -87,7 +90,10 @@ WSGI_APPLICATION = "core.wsgi.application"
 # ============================================================
 DATABASES = {
     "default": dj_database_url.config(
-        default=os.getenv("DATABASE_URL", "postgres://postgres:password@localhost:5432/hotel_db"),
+        default=os.getenv(
+            "DATABASE_URL",
+            "postgres://postgres:password@localhost:5432/hotel_db"
+        ),
         conn_max_age=600,
     )
 }
@@ -96,9 +102,8 @@ DATABASES = {
 # Static & Media Files
 # ============================================================
 STATIC_URL = "/static/"
+STATICFILES_DIRS = [FRONTEND_BUILD_DIR]  # serve static frontend
 STATIC_ROOT = BASE_DIR / "staticfiles"
-STATICFILES_DIRS = [FRONTEND_BUILD_DIR / "static"]
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
@@ -126,9 +131,17 @@ REST_FRAMEWORK = {
 # ============================================================
 # CORS & CSRF Configuration
 # ============================================================
-CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "").split(",")
-CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",")
-CORS_ALLOW_CREDENTIALS = os.getenv("CORS_ALLOW_CREDENTIALS", "True") == "True"
+CORS_ALLOWED_ORIGINS = [
+    "https://6ahotels.com",
+    "https://www.6ahotels.com",
+    "https://sixa-hotel-backend.onrender.com",
+]
+CSRF_TRUSTED_ORIGINS = [
+    "https://6ahotels.com",
+    "https://www.6ahotels.com",
+    "https://sixa-hotel-backend.onrender.com",
+]
+CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOW_HEADERS = [
     "accept",
@@ -140,11 +153,6 @@ CORS_ALLOW_HEADERS = [
     "user-agent",
     "x-csrftoken",
     "x-requested-with",
-]
-CORS_ALLOWED_ORIGINS = [
-    "https://6ahotels.com",
-    "https://www.6ahotels.com",
-    "https://sixa-hotel-backend.onrender.com",
 ]
 
 # ============================================================
