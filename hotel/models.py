@@ -9,7 +9,7 @@ class Room(models.Model):
         ('suite', 'Suite'),
     ]
     number = models.CharField(max_length=10, unique=True)
-    type = models.CharField(max_length=10, choices=ROOM_TYPES)
+    type = models.CharField(max_length=50, choices=ROOM_TYPES)
     price_per_night = models.DecimalField(max_digits=8, decimal_places=2)
     description = models.TextField(blank=True)
     is_available = models.BooleanField(default=True)

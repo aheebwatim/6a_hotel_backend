@@ -1,59 +1,42 @@
-# ==========================================================
-# Render Blueprint — 6a Hotel Backend
-# Deploys Django + PostgreSQL + Whitenoise on Render
-# ==========================================================
+# ============================================================
+# Render Deployment Configuration for 6A Hotel
+# ============================================================
 
 services:
   - type: web
-    name: 6a-hotel-backend
+    name: 6a-hotel
     env: python
-    plan: free             # can switch to starter/pro later
-    buildCommand: "pip install -r requirements.txt && python manage.py collectstatic --noinput"
-    startCommand: "gunicorn core.wsgi:application"
+    region: frankfurt  # or 'oregon' if you prefer US region
+    buildCommand: |
+      pip install --upgrade pip
+      pip install -r requirements.txt
+      npm install --prefix frontend/react_app
+      npm run build --prefix frontend/react_app
+      mkdir -p backend/frontend_build
+      cp -r frontend/react_app/build/* backend/frontend_build/
+      python manage.py collectstatic --noinput
+    startCommand: gunicorn core.wsgi:application
+    autoDeploy: true
 
     envVars:
-      # --- Core Django ---
+      - key: DEBUG
+        value: "False"
       - key: DJANGO_SETTINGS_MODULE
         value: core.settings
-      - key: DEBUG
-        value: false
-      - key: SECRET_KEY
-        generateValue: true
-      - key: ALLOWED_HOSTS
-        value: ".onrender.com,6ahotels.com,www.6ahotels.com,localhost,127.0.0.1"
-
-      # --- Python version ---
       - key: PYTHON_VERSION
         value: 3.13.4
-
-      # --- Database (auto-linked below) ---
+      - key: WEB_CONCURRENCY
+        value: 4
+      - key: ALLOWED_HOSTS
+        value: .onrender.com,6ahotels.com,www.6ahotels.com
+      - key: SECRET_KEY
+        sync: false  # set manually in Render Dashboard
       - key: DATABASE_URL
         fromDatabase:
           name: 6a-hotel-db
           property: connectionString
 
-      # --- CORS & CSRF ---
-      - key: CORS_ALLOWED_ORIGINS
-        value: "https://6ahotels.com,https://www.6ahotels.com,https://6a-hotel-backend.onrender.com,http://localhost:3000"
-      - key: CSRF_TRUSTED_ORIGINS
-        value: "https://6ahotels.com,https://www.6ahotels.com,https://6a-hotel-backend.onrender.com,http://localhost:3000"
-
-      # --- Timezone & Language ---
-      - key: TIME_ZONE
-        value: Africa/Kampala
-      - key: LANGUAGE_CODE
-        value: en-us
-
-      # --- Static & Media Paths ---
-      - key: STATIC_URL
-        value: /static/
-      - key: MEDIA_URL
-        value: /media/
-      - key: STATIC_ROOT
-        value: /opt/render/project/src/staticfiles
-      - key: MEDIA_ROOT
-        value: /opt/render/project/src/media
-
 databases:
   - name: 6a-hotel-db
+    databaseName: hotel_db
     plan: free

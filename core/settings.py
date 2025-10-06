@@ -11,16 +11,14 @@ FRONTEND_BUILD_DIR = BASE_DIR / "frontend_build"
 load_dotenv(BASE_DIR / ".env")
 
 # ============================================================
-# Security & Debug
+# Security & Environment
 # ============================================================
-SECRET_KEY = os.getenv("SECRET_KEY", "fallback-key")
+SECRET_KEY = os.getenv("SECRET_KEY", "fallback-secret-key")
 DEBUG = os.getenv("DEBUG", "True") == "True"
 
-ALLOWED_HOSTS = os.getenv(
-    "ALLOWED_HOSTS",
-    "localhost,127.0.0.1,sixa-hotel-backend.onrender.com"
-).split(",")
+ALLOWED_HOSTS = ["6ahotels.com", "www.6ahotels.com", "sixa-hotel-backend.onrender.com"]
 
+# Trust proxy headers (Render, Caddy, etc.)
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 # ============================================================
@@ -40,6 +38,7 @@ INSTALLED_APPS = [
     "django_filters",
     "corsheaders",
     
+
     # Local apps
     "api",
     "hotel",
@@ -63,15 +62,16 @@ MIDDLEWARE = [
 ROOT_URLCONF = "core.urls"
 
 # ============================================================
-# Templates (React Integration)
+# Templates (Serve React Build)
 # ============================================================
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [FRONTEND_BUILD_DIR],
+        "DIRS": [FRONTEND_BUILD_DIR],  # React index.html
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
+                "django.template.context_processors.debug",
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
@@ -87,13 +87,13 @@ WSGI_APPLICATION = "core.wsgi.application"
 # ============================================================
 DATABASES = {
     "default": dj_database_url.config(
-        default="postgresql://postgres:mylifestory/002@127.0.0.1:5432/hotel_db",
-        conn_max_age=600
+        default=os.getenv("DATABASE_URL", "postgres://postgres:password@localhost:5432/hotel_db"),
+        conn_max_age=600,
     )
 }
 
 # ============================================================
-# Static & Media
+# Static & Media Files
 # ============================================================
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
@@ -126,18 +126,9 @@ REST_FRAMEWORK = {
 # ============================================================
 # CORS & CSRF Configuration
 # ============================================================
-CORS_ALLOWED_ORIGINS = [
-    "https://sixa-hotel-frontend.onrender.com",
-    "https://sixa-hotel-frontend-tuce.onrender.com",
-    "http://localhost:3000",
-]
-CORS_ALLOW_CREDENTIALS = True
-
-CSRF_TRUSTED_ORIGINS = [
-    "https://sixa-hotel-frontend.onrender.com",
-    "https://sixa-hotel-frontend-tuce.onrender.com",
-    "http://localhost:3000",
-]
+CORS_ALLOWED_ORIGINS = os.getenv("CORS_ALLOWED_ORIGINS", "").split(",")
+CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",")
+CORS_ALLOW_CREDENTIALS = os.getenv("CORS_ALLOW_CREDENTIALS", "True") == "True"
 
 CORS_ALLOW_HEADERS = [
     "accept",
@@ -149,6 +140,11 @@ CORS_ALLOW_HEADERS = [
     "user-agent",
     "x-csrftoken",
     "x-requested-with",
+]
+CORS_ALLOWED_ORIGINS = [
+    "https://6ahotels.com",
+    "https://www.6ahotels.com",
+    "https://sixa-hotel-backend.onrender.com",
 ]
 
 # ============================================================
@@ -162,7 +158,7 @@ USE_TZ = True
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # ============================================================
-# Production Security (Render)
+# Production Security
 # ============================================================
 if not DEBUG:
     SECURE_HSTS_SECONDS = 31536000
@@ -170,14 +166,3 @@ if not DEBUG:
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
-
-# ============================================================
-# Email Setup
-# ============================================================
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "smtp.gmail.com"
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = "aheebwatim@gmail.com"
-EMAIL_HOST_PASSWORD = "rmmi fhas wngp azpp"  # Gmail App Password
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
