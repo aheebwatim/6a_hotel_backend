@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gallery — 6A Hotel</title>
+  <meta name="description" content="Explore the gallery of 6A Hotel — rooms, bar, wellness, conference and more. See our spaces before you book.">
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+</head>
+
+<body>
+  <div data-include="sections/navbar.html"></div>
+
+  <!-- HERO -->
+  <section class="page-hero">
+    <div class="container">
+      <h1>Gallery</h1>
+      <p>A visual look into the spaces, service, and soul of 6A Hotel.</p>
+    </div>
+  </section>
+
+  <!-- GALLERY GRID -->
+  <section class="gallery-grid">
+  <div class="container">
+
+    <!-- ROOMS -->
+    <h2 class="gallery-heading">Rooms</h2>
+    <div class="grid-layout">
+      <img src="assets/images/6A-Hotel-Single-standard.jpg" alt="Single Room">
+      <img src="assets/images/6A-Hotel-bed.jpg" alt="Bed Setup">
+      <img src="assets/images/6A-Hotel-Double-deluxe.jpg" alt="Double Deluxe">
+    </div>
+
+    <!-- CONFERENCE -->
+    <h2 class="gallery-heading">Conference & Boardroom</h2>
+    <div class="grid-layout">
+      <img src="assets/images/6A-Hotel-conference-and-boardroom.jpg" alt="Conference Room">
+      <img src="assets/images/6A-Hotel-board.jpg" alt="Boardroom Table">
+    </div>
+
+    <!-- BAR & LOUNGE -->
+    <h2 class="gallery-heading">Bar & Lounge</h2>
+    <div class="grid-layout">
+      <img src="assets/images/6A-Hotel-bar.jpg" alt="Bar Area">
+      <img src="assets/images/6A-Hotel-bar-inside-square.jpg" alt="Bar Interior">
+    </div>
+
+    <!-- SPA & GROOMING -->
+    <h2 class="gallery-heading">Spa & Grooming</h2>
+    <div class="grid-layout">
+      <img src="assets/images/6A-Hotel-spa-and-wellness-square-1.jpg" alt="Spa Interior">
+      <img src="assets/images/6A-Hotel-hair-salon-barber-500.webp" alt="Hair Salon">
+    </div>
+
+    <!-- EXTERIOR & LOBBY -->
+    <h2 class="gallery-heading">Exterior & Lobby</h2>
+    <div class="grid-layout">
+      <img src="assets/images/6A-Hotel-Building.jpg" alt="Hotel Exterior">
+      <img src="assets/images/6A-Hotel-receptionist.webp" alt="Reception Desk">
+    </div>
+
+  </div>
+</section>
+
+  <!-- CTA -->
+  <section class="rooms-reservation-cta">
+    <div class="container cta-two-col">
+      <div class="cta-booking">
+        <h3>Like What You See?</h3>
+        <p>Pick a room, select your dates, and we'll handle the rest.</p>
+        <a href="reservation.html" class="btn-primary">Make a Reservation</a>
+      </div>
+      <div class="cta-contact">
+        <h4>Need Help?</h4>
+        <p><strong>Phone:</strong> +256 700 123456</p>
+        <p><strong>Email:</strong> reservations@6ahotel.com</p>
+      </div>
+    </div>
+  </section>
+
+  <div data-include="sections/footer.html"></div>
+  <script src="js/main.js"></script>
+
+<!-- LIGHTBOX MODAL -->
+<div id="lightbox-modal" class="lightbox">
+  <span class="lightbox-close">&times;</span>
+  <img class="lightbox-content" id="lightbox-img" alt="Expanded View">
+  <span class="lightbox-prev">&#10094;</span>
+  <span class="lightbox-next">&#10095;</span>
+</div>
+
+</body>
+</html>

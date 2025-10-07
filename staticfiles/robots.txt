@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://6ahotel.com/sitemap.xml
