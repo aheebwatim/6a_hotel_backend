@@ -7,7 +7,7 @@ import dj_database_url
 # Base Setup
 # ============================================================
 BASE_DIR = Path(__file__).resolve().parent.parent
-FRONTEND_BUILD_DIR = BASE_DIR / "frontend_build"  # <-- fixed (no /build)
+FRONTEND_BUILD_DIR = BASE_DIR / "frontend_build"
 load_dotenv(BASE_DIR / ".env")
 
 # ============================================================
@@ -16,13 +16,12 @@ load_dotenv(BASE_DIR / ".env")
 SECRET_KEY = os.getenv("SECRET_KEY", "fallback-secret-key")
 DEBUG = os.getenv("DEBUG", "True") == "True"
 
-ALLOWED_HOSTS = [
-    "6ahotels.com",
-    "www.6ahotels.com",
-    "sixa-hotel-backend.onrender.com",
-]
+ALLOWED_HOSTS = os.getenv(
+    "ALLOWED_HOSTS",
+    "6ahotel.com,www.6ahotel.com,sixa-hotel-backend.onrender.com,localhost,127.0.0.1"
+).split(",")
 
-# Trust proxy headers (Render, Caddy, etc.)
+# Trust proxy headers (Render)
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 # ============================================================
@@ -51,7 +50,7 @@ INSTALLED_APPS = [
 # Middleware
 # ============================================================
 MIDDLEWARE = [
-    "corsheaders.middleware.CorsMiddleware",  # must come first
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -65,12 +64,12 @@ MIDDLEWARE = [
 ROOT_URLCONF = "core.urls"
 
 # ============================================================
-# Templates (Serve Static Frontend)
+# Templates (Frontend Integration)
 # ============================================================
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [FRONTEND_BUILD_DIR],  # point directly to static index.html
+        "DIRS": [FRONTEND_BUILD_DIR],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -92,7 +91,7 @@ DATABASES = {
     "default": dj_database_url.config(
         default=os.getenv(
             "DATABASE_URL",
-            "postgres://postgres:password@localhost:5432/hotel_db"
+            "postgresql://postgres:password@127.0.0.1:5432/hotel_db"
         ),
         conn_max_age=600,
     )
@@ -102,7 +101,7 @@ DATABASES = {
 # Static & Media Files
 # ============================================================
 STATIC_URL = "/static/"
-STATICFILES_DIRS = [FRONTEND_BUILD_DIR]  # serve static frontend
+STATICFILES_DIRS = [FRONTEND_BUILD_DIR]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 MEDIA_URL = "/media/"
@@ -131,29 +130,17 @@ REST_FRAMEWORK = {
 # ============================================================
 # CORS & CSRF Configuration
 # ============================================================
-CORS_ALLOWED_ORIGINS = [
-    "https://6ahotels.com",
-    "https://www.6ahotels.com",
-    "https://sixa-hotel-backend.onrender.com",
-]
-CSRF_TRUSTED_ORIGINS = [
-    "https://6ahotels.com",
-    "https://www.6ahotels.com",
-    "https://sixa-hotel-backend.onrender.com",
-]
-CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS = os.getenv(
+    "CORS_ALLOWED_ORIGINS",
+    "https://6ahotel.com,https://www.6ahotel.com,https://sixa-hotel-backend.onrender.com,http://localhost:3000"
+).split(",")
 
-CORS_ALLOW_HEADERS = [
-    "accept",
-    "accept-encoding",
-    "authorization",
-    "content-type",
-    "dnt",
-    "origin",
-    "user-agent",
-    "x-csrftoken",
-    "x-requested-with",
-]
+CSRF_TRUSTED_ORIGINS = os.getenv(
+    "CSRF_TRUSTED_ORIGINS",
+    "https://6ahotel.com,https://www.6ahotel.com,https://sixa-hotel-backend.onrender.com,http://localhost:3000"
+).split(",")
+
+CORS_ALLOW_CREDENTIALS = os.getenv("CORS_ALLOW_CREDENTIALS", "True") == "True"
 
 # ============================================================
 # Internationalization
