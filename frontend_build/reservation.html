@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Make a Reservation — 6A Hotel</title>
   <meta name="description" content="Reserve your stay at 6A Hotel in Arua. Choose your room, provide your details, and let us handle the rest.">
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="/static/css/style.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </head>
 
 <body>
-  <div data-include="sections/navbar.html"></div>
+  <div data-include="/static/sections/navbar.html"></div>
 
   <!-- HERO -->
   <section class="page-hero">
@@ -71,8 +71,8 @@
     </div>
   </section>
 
-  <div data-include="sections/footer.html"></div>
-  <script src="js/main.js"></script>
+  <div data-include="/static/sections/footer.html"></div>
+  <script src="/static/js/main.js"></script>
   <script>
     // Autofill room type from URL param
     const urlParams = new URLSearchParams(window.location.search);
