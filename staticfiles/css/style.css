@@ -1365,3 +1365,169 @@ textarea {
   margin-right: 8px;
   font-size: 1.2em;
 }
+/* ================================================
+   6A Hotel – Responsive & Layout Polish
+   ================================================ */
+
+/* Base scaling */
+html {
+  font-size: 16px;
+}
+
+@media (max-width: 1200px) {
+  html {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 992px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 768px) {
+  html {
+    font-size: 13px;
+  }
+}
+
+/* Container rhythm */
+section,
+.about-wrapper,
+.services-section,
+.rooms-section,
+.gallery-section,
+.contact-section {
+  padding: 3rem 1.25rem;
+}
+
+/* Headings and text */
+h1, h2, h3 {
+  line-height: 1.2;
+  word-break: keep-all;
+}
+p {
+  line-height: 1.7;
+}
+
+/* Navbar polish */
+.navbar-container {
+  flex-wrap: wrap;
+}
+.navbar-links {
+  flex-wrap: wrap;
+  justify-content: center;
+}
+@media (max-width: 768px) {
+  .navbar-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  .navbar-links {
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+}
+
+/* Hero optimization */
+.hero-full,
+.about-hero {
+  height: auto;
+  min-height: 70vh;
+  padding: 4rem 1rem;
+  background-position: center;
+}
+.hero-overlay h1 {
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+}
+.hero-overlay p {
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+}
+
+/* Flex → column on mobile */
+@media (max-width: 900px) {
+  .about-container,
+  .room-overview,
+  .feature-flex,
+  .cta-two-col,
+  .spa-cta-flex,
+  .contact-grid {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+}
+
+/* Grid tweaks */
+.gallery-grid,
+.grid-layout,
+.services-grid {
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+@media (max-width: 480px) {
+  .gallery-grid img,
+  .grid-layout img {
+    height: 150px;
+  }
+}
+
+/* Image consistency */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+/* Buttons */
+.btn-primary,
+.btn-secondary {
+  font-size: 0.95rem;
+  transition: all 0.25s ease;
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+}
+
+/* Footer alignment */
+.footer {
+  text-align: center;
+  padding: 2.5rem 1rem;
+}
+.footer-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* Smooth form layout */
+.contact-form form,
+.reservation-form form {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Small device spacing */
+@media (max-width: 480px) {
+  section {
+    padding: 2rem 1rem;
+  }
+  .btn-primary,
+  .btn-secondary {
+    padding: 0.65rem 1.25rem;
+  }
+  h1 {
+    font-size: 1.75rem;
+  }
+  h2 {
+    font-size: 1.4rem;
+  }
+  p {
+    font-size: 0.95rem;
+  }
+}
