@@ -1,77 +1,42 @@
-console.log("Inject script loaded");
+document.addEventListener("DOMContentLoaded", function() {
+  const form = document.getElementById("reservationForm");
+  if (!form) return;
 
-document.addEventListener("DOMContentLoaded", () => {
-  // Inject HTML from data-include attributes
-  document.querySelectorAll("[data-include]").forEach(async (el) => {
-    const file = el.getAttribute("data-include");
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const formData = Object.fromEntries(new FormData(form).entries());
     try {
-      const res = await fetch(file);
-      if (res.ok) {
-        const html = await res.text();
-        el.innerHTML = html;
+      const response = await fetch("https://sixa-hotel-backend.onrender.com/api/reservations/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
-        // Once injected, run active link check
-        highlightActiveLink();
-
-        // Then activate lightbox if this page contains a gallery
-        activateLightbox();
+      const result = await response.json();
+      if (response.ok && result.ok) {
+        alert("✅ Reservation submitted! We'll contact you shortly.");
+        form.reset();
       } else {
-        el.innerHTML = `<p>⚠️ Failed to load ${file}</p>`;
+        alert(`❌ ${result.error || "Unable to process reservation."}`);
       }
     } catch (err) {
-      el.innerHTML = `<p>⚠️ Error loading ${file}</p>`;
+      console.error(err);
+      alert("⚠️ Network error. Please try again later.");
     }
   });
-});
 
-function highlightActiveLink() {
-  const path = window.location.pathname.split("/").pop();
-  const links = document.querySelectorAll(".nav-link");
-
-  links.forEach(link => {
-    if (link.getAttribute("href") === path) {
-      link.classList.add("active");
-    }
-  });
-}
-
-function activateLightbox() {
-  const modal = document.getElementById("lightbox-modal");
-  const modalImg = document.getElementById("lightbox-img");
-  const closeBtn = document.querySelector(".lightbox-close");
-  const prevBtn = document.querySelector(".lightbox-prev");
-  const nextBtn = document.querySelector(".lightbox-next");
-  const images = Array.from(document.querySelectorAll(".grid-layout img"));
-
-  let currentIndex = -1;
-
-  if (!modal || !modalImg || !closeBtn) return;
-
-  function showImage(index) {
-    if (index < 0) index = images.length - 1;
-    if (index >= images.length) index = 0;
-    currentIndex = index;
-    modalImg.src = images[currentIndex].src;
-    modalImg.alt = images[currentIndex].alt;
-    modal.style.display = "block";
+  // Autofill room type from URL param
+  const urlParams = new URLSearchParams(window.location.search);
+  const roomType = urlParams.get("room");
+  if (roomType) {
+    const roomSelect = document.getElementById("room_id");
+    Array.from(roomSelect.options).forEach(opt => {
+      if (opt.text.toLowerCase() === roomType.toLowerCase()) {
+        opt.selected = true;
+      }
+    });
   }
-
-  images.forEach((img, index) => {
-    img.addEventListener("click", () => showImage(index));
-  });
-
-  nextBtn.onclick = () => showImage(currentIndex + 1);
-  prevBtn.onclick = () => showImage(currentIndex - 1);
-  closeBtn.onclick = () => modal.style.display = "none";
-
-  window.addEventListener("keydown", (e) => {
-    if (modal.style.display !== "block") return;
-    if (e.key === "ArrowRight") showImage(currentIndex + 1);
-    if (e.key === "ArrowLeft") showImage(currentIndex - 1);
-    if (e.key === "Escape") modal.style.display = "none";
-  });
-
-  window.addEventListener("click", (e) => {
-    if (e.target === modal) modal.style.display = "none";
-  });
-}
+});

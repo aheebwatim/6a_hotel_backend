@@ -1,0 +1,10 @@
+
+    Directory: F:\Empire\Personal\Work\Clients\6a_hotel\website\backend\api\migrations
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a---          5 Oct 2025    08:11              0 __init__.py
+d----          5 Oct 2025    11:03                __pycache__
+-a---          5 Oct 2025    08:13            720 0001_initial.py
+-a---          5 Oct 2025    11:03           1507 0002_service_reservation.py
+

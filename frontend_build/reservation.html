@@ -21,73 +21,64 @@
   </section>
 
   <!-- RESERVATION FORM -->
-  <section class="reservation-form">
-    <div class="container">
-
-      <form action="http://127.0.0.1:8000/api/contact/" method="POST">
-        <div class="form-row">
-          <div class="form-group">
-            <label for="name">Full Name*</label>
-            <input type="text" id="name" name="name" required>
-          </div>
-          <div class="form-group">
-            <label for="email">Email Address*</label>
-            <input type="email" id="email" name="email" required>
-          </div>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group">
-            <label for="phone">Phone Number*</label>
-            <input type="tel" id="phone" name="phone" required>
-          </div>
-          <div class="form-group">
-            <label for="room">Room Type</label>
-            <select name="room" id="room">
-              <option>Single Standard</option>
-              <option>Double Deluxe</option>
-              <option>Deluxe Suite / Family</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group">
-            <label for="dates">Preferred Dates</label>
-            <input type="text" id="dates" name="dates" placeholder="e.g. July 10–12">
-          </div>
-          <div class="form-group">
-            <label for="notes">Additional Notes (Optional)</label>
-            <textarea name="notes" id="notes" rows="3" placeholder="Any requests or instructions?"></textarea>
-          </div>
-        </div>
-
-        <div class="form-actions">
-          <button type="submit" class="btn-primary">Submit Reservation Request</button>
-          <button type="button" onclick="history.back()" class="btn-secondary">← Go Back</button>
-        </div>
-      </form>
-
+  <form id="reservationForm">
+  <div class="form-row">
+    <div class="form-group">
+      <label for="guest_name">Full Name*</label>
+      <input type="text" id="guest_name" name="guest_name" required>
     </div>
-  </section>
+    <div class="form-group">
+      <label for="guest_email">Email Address*</label>
+      <input type="email" id="guest_email" name="guest_email" required>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label for="guest_phone">Phone Number*</label>
+      <input type="tel" id="guest_phone" name="guest_phone" required>
+    </div>
+    <div class="form-group">
+      <label for="room_id">Room Type*</label>
+      <select name="room_id" id="room_id" required>
+        <option value="1">Single Standard</option>
+        <option value="2">Double Deluxe</option>
+        <option value="3">Deluxe Suite / Family</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label for="check_in">Check-In Date*</label>
+      <input type="date" id="check_in" name="check_in" required>
+    </div>
+    <div class="form-group">
+      <label for="check_out">Check-Out Date*</label>
+      <input type="date" id="check_out" name="check_out" required>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label for="num_guests">Number of Guests*</label>
+      <input type="number" id="num_guests" name="num_guests" min="1" value="1" required>
+    </div>
+    <div class="form-group">
+      <label for="special_requests">Special Requests (Optional)</label>
+      <textarea id="special_requests" name="special_requests" rows="3" placeholder="Any requests or notes?"></textarea>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <button type="submit" class="btn-primary">Submit Reservation</button>
+    <button type="button" onclick="history.back()" class="btn-secondary">← Go Back</button>
+  </div>
+</form>
 
   <div data-include="/static/sections/footer.html"></div>
   <script src="/static/js/main.js"></script>
 
-  <script>
-    // Autofill room type from URL param
-    const urlParams = new URLSearchParams(window.location.search);
-    const roomType = urlParams.get("room");
-    if (roomType) {
-      document.addEventListener("DOMContentLoaded", () => {
-        const roomSelect = document.getElementById("room");
-        Array.from(roomSelect.options).forEach(opt => {
-          if (opt.value.toLowerCase() === roomType.toLowerCase()) {
-            opt.selected = true;
-          }
-        });
-      });
-    }
-  </script>
+  
 </body>
 </html>

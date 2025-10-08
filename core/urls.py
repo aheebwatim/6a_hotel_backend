@@ -7,5 +7,7 @@ urlpatterns = [
     path("api/", include("api.urls")),
     path("api/auth/", include("api.jwt_urls")),
     path("hotel/", include("hotel.urls")),
-    re_path(r"^.*$", TemplateView.as_view(template_name="index.html")),
+
+    # serve frontend only for non-admin, non-api routes
+    re_path(r"^(?!admin|api|hotel).*", TemplateView.as_view(template_name="index.html")),
 ]

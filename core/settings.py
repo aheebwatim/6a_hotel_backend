@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django_extensions",
 
     # Third-party
     "rest_framework",
@@ -161,3 +162,39 @@ if not DEBUG:
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
+
+if DEBUG:
+    INSTALLED_APPS += ["django_extensions"]
+
+# =========================
+# EMAIL CONFIG
+# =========================
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = "aheebwatim@gmail.com"
+EMAIL_HOST_PASSWORD = os.getenv("rmmi fhas wngp azpp")  # use Gmail App Password
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+# === Email (development-friendly) ===
+# For dev: console backend prints emails to terminal.
+EMAIL_BACKEND = os.environ.get("EMAIL_BACKEND", "django.core.mail.backends.console.EmailBackend")
+DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "no-reply@6ahotel.local")
+
+# Who receives reservation notifications by email
+RESERVATIONS_NOTIFICATION_RECIPIENTS = [
+    os.environ.get("RESERVATION_NOTIFY_EMAIL", "aheebwatim@gmail.com"),
+]
+
+# === WhatsApp / Twilio (optional) ===
+TWILIO_ACCOUNT_SID = os.environ.get("TWILIO_ACCOUNT_SID", "")
+TWILIO_AUTH_TOKEN = os.environ.get("TWILIO_AUTH_TOKEN", "")
+# Example: 'whatsapp:+14155238886' from Twilio Sandbox/Business
+WHATSAPP_FROM = os.environ.get("WHATSAPP_FROM", "")
+# Your number for now:
+WHATSAPP_TO = os.environ.get("WHATSAPP_TO", "whatsapp:+256779985109")
+
+# You can also stash your public hotel contact here for future use
+HOTEL_PUBLIC_WHATSAPP = os.environ.get("HOTEL_PUBLIC_WHATSAPP", "+256779985109")
+HOTEL_PUBLIC_EMAIL = os.environ.get("HOTEL_PUBLIC_EMAIL", "aheebwatim@gmail.com")
