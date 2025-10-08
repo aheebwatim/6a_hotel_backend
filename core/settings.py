@@ -16,10 +16,17 @@ load_dotenv(BASE_DIR / ".env")
 SECRET_KEY = os.getenv("SECRET_KEY", "fallback-secret-key")
 DEBUG = os.getenv("DEBUG", "True") == "True"
 
-ALLOWED_HOSTS = os.getenv(
-    "ALLOWED_HOSTS",
-    "6ahotel.com,www.6ahotel.com,sixa-hotel-backend.onrender.com,localhost,127.0.0.1"
-).split(",")
+# ============================================================
+# Allowed Hosts (fix for 400 Bad Request)
+# ============================================================
+ALLOWED_HOSTS = [
+    "*",  # allow all hosts for Render + domain
+    "6ahotel.com",
+    "www.6ahotel.com",
+    "sixa-hotel-backend.onrender.com",
+    "localhost",
+    "127.0.0.1",
+]
 
 # Trust proxy headers (Render)
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
