@@ -2106,3 +2106,15 @@ section .btn-primary + .btn-primary {
     margin-bottom: 1.5rem;
   }
 }
+section {
+  padding-bottom: 60px; /* reduce if gap feels too wide */
+}
+.btn {
+  display: inline-block;
+  margin: 20px auto;
+}
+@media (max-width: 768px) {
+  section {
+    padding: 40px 0;
+  }
+}
