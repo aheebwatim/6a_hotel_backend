@@ -108,7 +108,7 @@ DATABASES = {
 # Static & Media Files
 # ============================================================
 STATIC_URL = "/static/"
-STATICFILES_DIRS = [FRONTEND_BUILD_DIR / "static"]
+STATICFILES_DIRS = [FRONTEND_BUILD_DIR]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 MEDIA_URL = "/media/"
