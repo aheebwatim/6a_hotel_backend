@@ -183,25 +183,25 @@ if not DEBUG:
 if DEBUG:
     INSTALLED_APPS += ["django_extensions"]
 
-# =========================
-# EMAIL CONFIG
-# =========================
+# ==========================================
+# EMAIL (Production via Brevo)
+# ==========================================
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "smtp.gmail.com"
+EMAIL_HOST = "smtp-relay.brevo.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = "aheebwatim@gmail.com"
-EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")  # use Gmail App Password
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", EMAIL_HOST_USER)
+
+# Notification recipients
+RESERVATIONS_NOTIFICATION_RECIPIENTS = [
+    os.getenv("RESERVATIONS_NOTIFICATION_RECIPIENTS", "aheebwatim@gmail.com"),
+]
 
 # === Email (development-friendly) ===
 # For dev: console backend prints emails to terminal.
 DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "no-reply@6ahotel.local")
-
-# Who receives reservation notifications by email
-RESERVATIONS_NOTIFICATION_RECIPIENTS = [
-    os.environ.get("RESERVATION_NOTIFY_EMAIL", "aheebwatim@gmail.com"),
-]
 
 # === WhatsApp / Twilio (optional) ===
 TWILIO_ACCOUNT_SID = os.environ.get("TWILIO_ACCOUNT_SID", "")
