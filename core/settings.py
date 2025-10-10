@@ -16,11 +16,8 @@ load_dotenv(BASE_DIR / ".env")
 SECRET_KEY = os.getenv("SECRET_KEY", "fallback-secret-key")
 DEBUG = os.getenv("DEBUG", "True") == "True"
 
-# ============================================================
-# Allowed Hosts (fix for 400 Bad Request)
-# ============================================================
 ALLOWED_HOSTS = [
-    "*",  # allow all hosts for Render + domain
+    "*",
     "6ahotel.com",
     "www.6ahotel.com",
     "sixa-hotel-backend.onrender.com",
@@ -28,14 +25,12 @@ ALLOWED_HOSTS = [
     "127.0.0.1",
 ]
 
-# Trust proxy headers (Render)
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
 # ============================================================
 # Installed Apps
 # ============================================================
 INSTALLED_APPS = [
-    # Django core
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -71,7 +66,7 @@ MIDDLEWARE = [
 ROOT_URLCONF = "core.urls"
 
 # ============================================================
-# Templates (Frontend Integration)
+# Templates
 # ============================================================
 TEMPLATES = [
     {
@@ -96,10 +91,7 @@ WSGI_APPLICATION = "core.wsgi.application"
 # ============================================================
 DATABASES = {
     "default": dj_database_url.config(
-        default=os.getenv(
-            "DATABASE_URL",
-            "postgresql://postgres:password@127.0.0.1:5432/hotel_db"
-        ),
+        default=os.getenv("DATABASE_URL", "postgresql://postgres:password@127.0.0.1:5432/hotel_db"),
         conn_max_age=600,
     )
 }
@@ -135,30 +127,19 @@ REST_FRAMEWORK = {
 }
 
 # ============================================================
-# CORS & CSRF Configuration (Fixed for Live Frontend)
+# CORS & CSRF
 # ============================================================
-CORS_ALLOWED_ORIGINS = [
-    "https://6ahotel.com",
-    "https://www.6ahotel.com",
-    "https://sixa-hotel-backend.onrender.com",
-]
+CORS_ALLOWED_ORIGINS = os.getenv(
+    "CORS_ALLOWED_ORIGINS",
+    "https://6ahotel.com,https://www.6ahotel.com,https://sixa-hotel-backend.onrender.com,http://localhost:3000"
+).split(",")
 
-CSRF_TRUSTED_ORIGINS = [
-    "https://6ahotel.com",
-    "https://www.6ahotel.com",
-    "https://sixa-hotel-backend.onrender.com",
-]
+CSRF_TRUSTED_ORIGINS = os.getenv(
+    "CSRF_TRUSTED_ORIGINS",
+    "https://6ahotel.com,https://www.6ahotel.com,https://sixa-hotel-backend.onrender.com,http://localhost:3000"
+).split(",")
 
-CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_ALL_HEADERS = True
-CORS_ALLOW_METHODS = [
-    "GET",
-    "POST",
-    "PUT",
-    "PATCH",
-    "DELETE",
-    "OPTIONS",
-]
+CORS_ALLOW_CREDENTIALS = os.getenv("CORS_ALLOW_CREDENTIALS", "True") == "True"
 
 # ============================================================
 # Internationalization
@@ -183,34 +164,29 @@ if not DEBUG:
 if DEBUG:
     INSTALLED_APPS += ["django_extensions"]
 
-# ==========================================
+# ============================================================
 # EMAIL (Production via Brevo)
-# ==========================================
+# ============================================================
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp-relay.brevo.com"
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
-DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", EMAIL_HOST_USER)
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "info@6ahotel.com")
 
 # Notification recipients
 RESERVATIONS_NOTIFICATION_RECIPIENTS = [
     os.getenv("RESERVATIONS_NOTIFICATION_RECIPIENTS", "aheebwatim@gmail.com"),
 ]
 
-# === Email (development-friendly) ===
-# For dev: console backend prints emails to terminal.
-DEFAULT_FROM_EMAIL = os.environ.get("DEFAULT_FROM_EMAIL", "no-reply@6ahotel.local")
-
-# === WhatsApp / Twilio (optional) ===
+# ============================================================
+# WhatsApp (Optional)
+# ============================================================
 TWILIO_ACCOUNT_SID = os.environ.get("TWILIO_ACCOUNT_SID", "")
 TWILIO_AUTH_TOKEN = os.environ.get("TWILIO_AUTH_TOKEN", "")
-# Example: 'whatsapp:+14155238886' from Twilio Sandbox/Business
 WHATSAPP_FROM = os.environ.get("WHATSAPP_FROM", "")
-# Your number for now:
 WHATSAPP_TO = os.environ.get("WHATSAPP_TO", "whatsapp:+256779985109")
 
-# You can also stash your public hotel contact here for future use
 HOTEL_PUBLIC_WHATSAPP = os.environ.get("HOTEL_PUBLIC_WHATSAPP", "+256779985109")
-HOTEL_PUBLIC_EMAIL = os.environ.get("HOTEL_PUBLIC_EMAIL", "aheebwatim@gmail.com")
+HOTEL_PUBLIC_EMAIL = os.environ.get("HOTEL_PUBLIC_EMAIL", "info@6ahotel.com")
