@@ -129,15 +129,22 @@ REST_FRAMEWORK = {
 # ============================================================
 # CORS & CSRF
 # ============================================================
-CORS_ALLOWED_ORIGINS = os.getenv(
-    "CORS_ALLOWED_ORIGINS",
-    "https://6ahotel.com,https://www.6ahotel.com,https://sixa-hotel-backend.onrender.com,http://localhost:3000"
-).split(",")
+CORS_ALLOW_ALL_ORIGINS = False
+CORS_ALLOWED_ORIGINS = [
+    "https://6ahotel.com",
+    "https://www.6ahotel.com",
+    "https://sixa-hotel-backend.onrender.com",
+]
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_HEADERS = ["*"]
+CORS_ALLOW_METHODS = ["GET", "POST", "OPTIONS", "PUT", "DELETE"]
 
-CSRF_TRUSTED_ORIGINS = os.getenv(
-    "CSRF_TRUSTED_ORIGINS",
-    "https://6ahotel.com,https://www.6ahotel.com,https://sixa-hotel-backend.onrender.com,http://localhost:3000"
-).split(",")
+CSRF_TRUSTED_ORIGINS = [
+    "https://6ahotel.com",
+    "https://www.6ahotel.com",
+    "https://sixa-hotel-backend.onrender.com",
+    "http://localhost:3000",
+]
 
 CORS_ALLOW_CREDENTIALS = os.getenv("CORS_ALLOW_CREDENTIALS", "True") == "True"
 
